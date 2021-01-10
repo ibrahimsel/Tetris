@@ -28,7 +28,7 @@ namespace Tetris666
         Label[] placedTetrominos = new Label[1472];
         Point[] occupiedPlaces = new Point[1472];
         Random rand = new Random();
-        int gecenSaniye = 0;
+        int seconds = 0;
         int nth = 0;
 
         #endregion
@@ -446,8 +446,8 @@ namespace Tetris666
 
         private void timer2_Tick(object sender, EventArgs e)
         {
-            gecenSaniye++;
-            label1.Text = "Puanınız: " + gecenSaniye.ToString();
+            seconds++;
+            label1.Text = "Total Points: " + seconds.ToString();
         }
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)
