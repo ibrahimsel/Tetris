@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -12,6 +12,7 @@ namespace Tetris666
         int x = 10;
         int y = 0;
         int occupiedRowCounter;
+        int[] allTetrominos = new int[300];
         bool startGame = false;
         int currentNumberOfTiles = 0;
         int currentNumberOfBlocks = 0;
@@ -24,11 +25,11 @@ namespace Tetris666
         Label[] tetromino6 = new Label[4];  // J
         Label[] tetromino7 = new Label[4];  // I
         Label[] currentTetromino = new Label[4];
-        //Label[] currentTetromino = new Label[4];
         Label[] placedTetrominos = new Label[1472];
         Point[] occupiedPlaces = new Point[1472];
         Random rand = new Random();
         int gecenSaniye = 0;
+        int nth = 0;
 
         #endregion
 
@@ -40,6 +41,12 @@ namespace Tetris666
                     return true;
             }
             return false;
+        }
+
+        private void FillAllTetrominos()
+        {
+            for (int i = 0; i < 300; i++)
+                allTetrominos[i] = rand.Next(1, 8);
         }
 
         private void RemoveTetromino()
@@ -90,14 +97,14 @@ namespace Tetris666
                 for (int x = 0; x <= 320; x += 20)
                 {
                     if (MyContains(occupiedPlaces, new Point(x, y)))
-                    {                     
+                    {
                         occupiedRowCounter += 1;
                     }
                     if (occupiedRowCounter == 16)
                     {
                         Console.WriteLine("OOGA BOOGA TETRIWS!");
                     }
-                }                
+                }
             }
         }
 
@@ -120,79 +127,101 @@ namespace Tetris666
                 Size = new Size(labelSize, labelSize),
                 BackColor = color,
             };
-            
+
             panel1.Controls.Add(particle);
             return particle;
         }
 
         private void GenerateTetromino()
         {
-            Color color = GenerateColor();
-            int randomNumber = rand.Next(1, 8);
-            switch (randomNumber)
+            if (nth ==  300)
             {
-                case 1:
-                    pictureBox1.Image = Image.FromFile(@"C:\Tetris\S.png");
-                    currentTetromino = tetromino1;
-                    tetromino1[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
-                    tetromino1[1] = AddLabelParticle(tetromino1[0].Location.X, tetromino1[0].Location.Y + labelSize, color);
-                    tetromino1[2] = AddLabelParticle(tetromino1[1].Location.X + labelSize, tetromino1[1].Location.Y, color);
-                    tetromino1[3] = AddLabelParticle(tetromino1[2].Location.X, tetromino1[1].Location.Y + labelSize, color);
-                    break;
-                case 2:
-                    pictureBox1.Image = Image.FromFile(@"C:\Tetris\Z.png");
-                    currentTetromino = tetromino2;
-                    tetromino2[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
-                    tetromino2[1] = AddLabelParticle(tetromino2[0].Location.X, tetromino2[0].Location.Y + labelSize, color);
-                    tetromino2[2] = AddLabelParticle(tetromino2[1].Location.X - labelSize, tetromino2[1].Location.Y, color);
-                    tetromino2[3] = AddLabelParticle(tetromino2[2].Location.X, tetromino2[2].Location.Y + labelSize, color);
-                    break;
-                case 3:
-                    pictureBox1.Image = Image.FromFile(@"C:\Tetris\O.png");
-                    currentTetromino = tetromino3;
-                    tetromino3[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
-                    tetromino3[1] = AddLabelParticle(tetromino3[0].Location.X, tetromino3[0].Location.Y + labelSize, color);
-                    tetromino3[2] = AddLabelParticle(tetromino3[1].Location.X - labelSize, tetromino3[1].Location.Y, color);
-                    tetromino3[3] = AddLabelParticle(tetromino3[2].Location.X, tetromino3[2].Location.Y - labelSize, color);
-                    break;
-                case 4:
-                    pictureBox1.Image = Image.FromFile(@"C:\Tetris\T.png");
-                    currentTetromino = tetromino4;
-                    tetromino4[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
-                    tetromino4[1] = AddLabelParticle(tetromino4[0].Location.X + labelSize, tetromino4[0].Location.Y, color);
-                    tetromino4[2] = AddLabelParticle(tetromino4[1].Location.X + labelSize, tetromino4[1].Location.Y, color);
-                    tetromino4[3] = AddLabelParticle(tetromino4[2].Location.X - labelSize, tetromino4[2].Location.Y + labelSize, color);
-                    break;
-                case 5:
-                    pictureBox1.Image = Image.FromFile(@"C:\Tetris\L.png");
+                nth = 0;
+                FillAllTetrominos();
+            }
+            Color color = GenerateColor();
+            switch (allTetrominos[nth])
+                {
+                    case 1:
+                        currentTetromino = tetromino1;
 
-                    currentTetromino = tetromino5;
-                    tetromino5[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
-                    tetromino5[1] = AddLabelParticle(tetromino5[0].Location.X, tetromino5[0].Location.Y + labelSize, color);
-                    tetromino5[2] = AddLabelParticle(tetromino5[1].Location.X, tetromino5[1].Location.Y + labelSize, color);
-                    tetromino5[3] = AddLabelParticle(tetromino5[2].Location.X + labelSize, tetromino5[2].Location.Y, color);
-                    break;
-                case 6:
-                    pictureBox1.Image = Image.FromFile(@"C:\Tetris\J.png");
-                    currentTetromino = tetromino6;
-                    tetromino6[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
-                    tetromino6[1] = AddLabelParticle(tetromino6[0].Location.X, tetromino6[0].Location.Y + labelSize, color);
-                    tetromino6[2] = AddLabelParticle(tetromino6[1].Location.X, tetromino6[1].Location.Y + labelSize, color);
-                    tetromino6[3] = AddLabelParticle(tetromino6[2].Location.X - labelSize, tetromino6[2].Location.Y, color);
-                    break;
-                case 7:
-                    pictureBox1.Image = Image.FromFile(@"C:\Tetris\I.png");
-                    currentTetromino = tetromino7;
-                    for (int i = 0; i < 4; i++)
-                    {
-                        tetromino7[i] = AddLabelParticle(x * labelSize, y + (i * labelSize), color);
-                    }
-                    break;
-            }   
+                        tetromino1[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
+                        tetromino1[1] = AddLabelParticle(tetromino1[0].Location.X, tetromino1[0].Location.Y + labelSize, color);
+                        tetromino1[2] = AddLabelParticle(tetromino1[1].Location.X + labelSize, tetromino1[1].Location.Y, color);
+                        tetromino1[3] = AddLabelParticle(tetromino1[2].Location.X, tetromino1[1].Location.Y + labelSize, color);
+
+                        break;
+                    case 2:
+                        currentTetromino = tetromino2;
+
+                        tetromino2[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
+                        tetromino2[1] = AddLabelParticle(tetromino2[0].Location.X, tetromino2[0].Location.Y + labelSize, color);
+                        tetromino2[2] = AddLabelParticle(tetromino2[1].Location.X - labelSize, tetromino2[1].Location.Y, color);
+                        tetromino2[3] = AddLabelParticle(tetromino2[2].Location.X, tetromino2[2].Location.Y + labelSize, color);
+
+                        break;
+                    case 3:
+                        currentTetromino = tetromino3;
+
+                        tetromino3[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
+                        tetromino3[1] = AddLabelParticle(tetromino3[0].Location.X, tetromino3[0].Location.Y + labelSize, color);
+                        tetromino3[2] = AddLabelParticle(tetromino3[1].Location.X - labelSize, tetromino3[1].Location.Y, color);
+                        tetromino3[3] = AddLabelParticle(tetromino3[2].Location.X, tetromino3[2].Location.Y - labelSize, color);
+
+                        break;
+                    case 4:
+                        currentTetromino = tetromino4;
+
+                        tetromino4[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
+                        tetromino4[1] = AddLabelParticle(tetromino4[0].Location.X + labelSize, tetromino4[0].Location.Y, color);
+                        tetromino4[2] = AddLabelParticle(tetromino4[1].Location.X + labelSize, tetromino4[1].Location.Y, color);
+                        tetromino4[3] = AddLabelParticle(tetromino4[2].Location.X - labelSize, tetromino4[2].Location.Y + labelSize, color);
+
+                        break;
+                    case 5:
+                        currentTetromino = tetromino5;
+
+                        tetromino5[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
+                        tetromino5[1] = AddLabelParticle(tetromino5[0].Location.X, tetromino5[0].Location.Y + labelSize, color);
+                        tetromino5[2] = AddLabelParticle(tetromino5[1].Location.X, tetromino5[1].Location.Y + labelSize, color);
+                        tetromino5[3] = AddLabelParticle(tetromino5[2].Location.X + labelSize, tetromino5[2].Location.Y, color);
+
+                        break;
+                    case 6:
+                        currentTetromino = tetromino6;
+
+                        tetromino6[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
+                        tetromino6[1] = AddLabelParticle(tetromino6[0].Location.X, tetromino6[0].Location.Y + labelSize, color);
+                        tetromino6[2] = AddLabelParticle(tetromino6[1].Location.X, tetromino6[1].Location.Y + labelSize, color);
+                        tetromino6[3] = AddLabelParticle(tetromino6[2].Location.X - labelSize, tetromino6[2].Location.Y, color);
+
+                        break;
+                    case 7:
+                        currentTetromino = tetromino7;
+
+                        for (int i = 0; i < 4; i++)
+                        {
+                            tetromino7[i] = AddLabelParticle(x * labelSize, y + (i * labelSize), color);
+                        }
+                        break;
+                }
+
+            // Show nextpiece
+            switch (allTetrominos[nth + 1])
+            {
+                case 1: pictureBox1.Image = Image.FromFile(@"C:/Tetris/S.png"); break;
+                case 2: pictureBox1.Image = Image.FromFile(@"C:/Tetris/Z.png"); break;
+                case 3: pictureBox1.Image = Image.FromFile(@"C:/Tetris/O.png"); break;
+                case 4: pictureBox1.Image = Image.FromFile(@"C:/Tetris/T.png"); break;
+                case 5: pictureBox1.Image = Image.FromFile(@"C:/Tetris/L.png"); break;
+                case 6: pictureBox1.Image = Image.FromFile(@"C:/Tetris/J.png"); break;
+                case 7: pictureBox1.Image = Image.FromFile(@"C:/Tetris/I.png"); break;
+            }
+            nth += 1;
         }
 
 
-        
+
         private Color GenerateColor()
         {
 
@@ -227,7 +256,7 @@ namespace Tetris666
                 if (x1 - labelVelocity >= 0 && !MyContains(occupiedPlaces, new Point(x1 - labelVelocity, y1)))
                     continue;
                 else
-                    return false;            
+                    return false;
             }
             return true;
         }
@@ -288,7 +317,7 @@ namespace Tetris666
                     currentTetromino[i].Location = new Point(x1, y1);
                 }
             }
-            
+
         }
 
         private void MoveRight()
@@ -305,9 +334,9 @@ namespace Tetris666
                     currentTetromino[i].Location = new Point(x1, y1);
                 }
             }
-            
+
         }
- 
+
         private void MoveUp()
         {
             for (int i = 0; i < 4; i++)
@@ -323,7 +352,7 @@ namespace Tetris666
         private void timer1_Tick(object sender, EventArgs e)
         {
             Console.WriteLine(IsLeftMovable().ToString());
-            
+
             if (!IsDownMovable())
             {
                 SaveOccupiedPoints();
@@ -348,7 +377,7 @@ namespace Tetris666
 
         }
 
-    
+
         private void Rotate()
         {
             int offTheBoundsRightCounter = 0;
@@ -393,28 +422,15 @@ namespace Tetris666
 
         }
 
-        private void button1_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.Down:
-                case Keys.Left:
-                case Keys.Right:
-                case Keys.Up:
-                    e.IsInputKey = true;
-                    break;
-            }
-        }
-
         private void button1_Click(object sender, EventArgs e)
         {
             startGame = true;
             timer1.Enabled = true;
+            FillAllTetrominos();
             GenerateTetromino();
 
-            
+
             button1.Visible = false;
-            button2.Visible = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -454,6 +470,19 @@ namespace Tetris666
                         Rotate();
                         break;
                 }
+            }
+        }
+
+        private void button2_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.Down:
+                case Keys.Left:
+                case Keys.Right:
+                case Keys.Up:
+                    e.IsInputKey = true;
+                    break;
             }
         }
     }
