@@ -43,18 +43,6 @@ namespace Tetris666
             return false;
         }
 
-        private int SearchIndex(Point[] array, Point point)
-        {
-            int index = 0;
-            foreach (Point p in array)
-            {
-                if (p == point)
-                    return index;
-                index += 1;
-            }
-            return -1;
-        }
-
         private void FillAllTetrominos()
         {
             for (int i = 0; i < 300; i++)
@@ -67,7 +55,7 @@ namespace Tetris666
             {
                 panel1.Controls.Remove(currentTetromino[i]);
             }
-            
+
         }
 
         private void ClearMap()
@@ -96,12 +84,12 @@ namespace Tetris666
                 occupiedPlaces[i] = new Point(x1, y1);
                 RemoveTetromino();
                 placedTetrominos[i] = AddLabelParticle(x1, y1, color);
-                
+
             }
             currentNumberOfTiles += 4;
             currentNumberOfBlocks += 1;
         }
-        
+
         private void IsThereTetris()
         {
             for (int y = 440; y > 0; y -= 20)
@@ -119,25 +107,41 @@ namespace Tetris666
                             {
                                 int y1 = occupiedPlaces[i].Y;
                                 int x1 = occupiedPlaces[i].X;
-                                occupiedPlaces[i] = new Point(x1, y1 + labelVelocity);
+
+                                if (y1 == y)
+                                {
+                                    x1 = 361;
+                                    y1 = 461;
+                                }
+                                else if (y1 < y)
+                                    y1 += labelVelocity;
+                                occupiedPlaces[i] = new Point(x1, y1);
                             }
 
                             for (int i = 0; i < currentNumberOfTiles; i++)
                             {
                                 int x1 = placedTetrominos[i].Location.X;
                                 int y1 = placedTetrominos[i].Location.Y;
-                                y1 += labelVelocity;
+                                if (y1 == y)
+                                {
+                                    x1 = 361;
+                                    y1 = 461;
+                                }
+                                else if (y1 < y)
+                                    y1 += labelVelocity;
                                 placedTetrominos[i].Location = new Point(x1, y1);
                             }
-
+                            x = 320;
+                            y = 460;
                         }
+                        
                     }
 
                 }
             }
         }
 
-       
+
 
         public Form1()
         {
@@ -498,8 +502,6 @@ namespace Tetris666
         {
             switch (e.KeyCode)
             {
-                case Keys.Space:
-                case Keys.Enter:
                 case Keys.Down:
                 case Keys.Left:
                 case Keys.Right:
