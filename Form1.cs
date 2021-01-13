@@ -15,7 +15,7 @@ namespace Tetris666
         int[] allTetrominos = new int[300];
         bool startGame = false;
         int currentNumberOfTiles = 0;
-        int currentNumberOfBlocks = 0;
+        bool rotateBack;
         Color color;
         Label[] tetromino1 = new Label[4];  // S
         Label[] tetromino2 = new Label[4];  // Z
@@ -30,8 +30,13 @@ namespace Tetris666
         Random rand = new Random();
         int score = 0;
         int nth = 0;
-
         #endregion
+
+
+        public Form1()
+        {
+            InitializeComponent();
+        }
 
         private bool MyContains(Point[] array, Point point)
         {
@@ -69,7 +74,6 @@ namespace Tetris666
             for (int i = 0; i < occupiedPlaces.Length; i++)
                 occupiedPlaces[i] = new Point(600, 600);
 
-            currentNumberOfBlocks = 0;
             currentNumberOfTiles = 0;
             occupiedRowCounter = 0;
             score = 0;
@@ -87,7 +91,6 @@ namespace Tetris666
 
             }
             currentNumberOfTiles += 4;
-            currentNumberOfBlocks += 1;
         }
 
         private void IsThereTetris()
@@ -139,14 +142,6 @@ namespace Tetris666
 
                 }
             }
-        }
-
-
-
-        public Form1()
-        {
-            InitializeComponent();
-            Text = "Tetris";
         }
 
         private Label AddLabelParticle(int x1, int y1, Color _color)
@@ -408,18 +403,20 @@ namespace Tetris666
             int offTheBoundsRightCounter = 0;
             int offTheBoundsLeftCounter = 0;
             int offTheBoundsDownCounter = 0;
-
+            
             if (currentTetromino != tetromino3)  // We dont rotate O because it has no center to rotate around
             {
                 for (int i = 0; i < 4; i++)
                 {
                     int x1 = currentTetromino[i].Location.X;
                     int y1 = currentTetromino[i].Location.Y;
-                    Point center = new Point(currentTetromino[1].Location.X, currentTetromino[1].Location.Y);
+                   
                     double angle = 90;
                     angle = angle * (Math.PI / 180);  // We need to convert the angle to radians
+                    Point center = new Point(currentTetromino[1].Location.X, currentTetromino[1].Location.Y);
 
-                    int x2 = (int)(Math.Cos(angle) * (x1 - center.X) - Math.Sin(angle) * (y1 - center.Y) + center.X);  // Rotation about a point formula
+
+                    int x2 = (int)(Math.Cos(angle) * (x1 - center.X) - Math.Sin(angle) * (y1 - center.Y) + center.X);  // Rotation about a point anti-clockwise formula
                     int y2 = (int)(Math.Sin(angle) * (x1 - center.X) + Math.Cos(angle) * (y1 - center.Y) + center.Y);
 
                     if (x2 < 0)
@@ -428,9 +425,34 @@ namespace Tetris666
                         offTheBoundsRightCounter += 1;
                     else if (y2 > 450)
                         offTheBoundsDownCounter += 1;
-
-                    currentTetromino[i].Location = new Point(x2, y2);
+                    
+                    if (MyContains(occupiedPlaces, new Point(x2, y2)))
+                    {
+                        rotateBack = true;
+                    }
+                    
+                        currentTetromino[i].Location = new Point(x2, y2);
                 }
+                if (rotateBack)
+                {
+                    for (int i = 0; i < 4; i++)
+                    {
+                        int x1 = currentTetromino[i].Location.X;
+                        int y1 = currentTetromino[i].Location.Y;
+                        double angle = -90;
+                        angle = angle * (Math.PI / 180);  // We need to convert the angle to radians
+                        Point center = new Point(currentTetromino[1].Location.X, currentTetromino[1].Location.Y);
+
+
+                        int x2 = (int)(Math.Cos(angle) * (x1 - center.X) - Math.Sin(angle) * (y1 - center.Y) + center.X);  // Rotation about a point anti-clockwise formula
+                        int y2 = (int)(Math.Sin(angle) * (x1 - center.X) + Math.Cos(angle) * (y1 - center.Y) + center.Y);
+                        currentTetromino[i].Location = new Point(x2, y2);
+                    }
+                    rotateBack = false;
+                }
+                
+
+
 
                 if (offTheBoundsLeftCounter != 0)
                     for (int i = 0; i < offTheBoundsLeftCounter; i++)
@@ -454,20 +476,19 @@ namespace Tetris666
             timer2.Enabled = true;
             FillAllTetrominos();
             GenerateTetromino();
-
-
             button1.Visible = false;
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            ClearMap();
-            startGame = true;
-            timer1.Enabled = true;
-            RemoveTetromino();
-            GenerateTetromino();
-
-
+            if (!button1.Visible)
+            {
+                ClearMap();
+                startGame = true;
+                timer1.Enabled = true;
+                RemoveTetromino();
+                GenerateTetromino();
+            }
         }
 
         private void timer2_Tick(object sender, EventArgs e)
