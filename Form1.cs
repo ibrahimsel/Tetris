@@ -367,7 +367,7 @@ namespace Tetris666
         {
             if (!IsDownMovable())  // If tetromino can't move down
             {
-                SaveOccupiedPoints();  // Save it's place
+                SaveOccupiedPoints();  // Save its place
                 IsThereTetris();       // Check and destroy if there is a full line
                 GenerateTetromino();   // Generate new tetromino
 
