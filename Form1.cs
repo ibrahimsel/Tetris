@@ -365,7 +365,6 @@ namespace Tetris666
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-
             if (!IsDownMovable())  // If tetromino can't move down
             {
                 SaveOccupiedPoints();  // Save it's place
@@ -379,9 +378,10 @@ namespace Tetris666
                     MessageBox.Show("Game Over");
 
                 }
-
             }
             MoveDown();
+            score++;
+            label1.Text = "Total Points: " + score.ToString();
 
         }
 
@@ -476,7 +476,6 @@ namespace Tetris666
         {
             startGame = true;
             timer1.Enabled = true;
-            timer2.Enabled = true;
             FillAllTetrominos();
             GenerateTetromino();
             button1.Visible = false;
@@ -495,11 +494,7 @@ namespace Tetris666
             }
         }
 
-        private void timer2_Tick(object sender, EventArgs e)  // Track the score
-        {
-            score++;
-            label1.Text = "Total Points: " + score.ToString();
-        }
+
 
         private void Form1_KeyDown(object sender, KeyEventArgs e)  // Key events
         {
