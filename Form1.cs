@@ -455,7 +455,7 @@ namespace Tetris666
 
                         int x2 = (int)(Math.Cos(angle) * (x1 - center.X) - Math.Sin(angle) * (y1 - center.Y) + center.X);  // Rotation about a point formula
                         int y2 = (int)(Math.Sin(angle) * (x1 - center.X) + Math.Cos(angle) * (y1 - center.Y) + center.Y);
-                        currentTetromino[i].Location = new Point(x2, y2);  // Get the label to it's old position
+                        currentTetromino[i].Location = new Point(x2, y2);  // Get the label to its old position
                     }
                     rotateBack = false;
                 }
