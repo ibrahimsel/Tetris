@@ -13,14 +13,14 @@ namespace Tetris666
         int occupiedRowCounter = 0;                     // We will use this to check if a line is full
 
         int[] allTetrominos = new int[300];             // We will use this array to store randomly generated tetromino numbers
-                                                            // So that we could generate current tetromino and see upcoming tetromino
+                                                        // So that we could generate current tetromino and see upcoming tetromino
 
         bool startGame = false;                         // This indicates if the game has started or not
         int currentNumberOfLabels = 0;                  // This counts how many labels have been deployed
 
         bool rotateBack;                                // We will be using this to rotate a piece back if it's unrotatable
-                                                            // If it's unrotatable, we will rotate it anti-clockwise then clockwise
-                                                            // So it won't be rotated
+                                                        // If it's unrotatable, we will rotate it anti-clockwise then clockwise
+                                                        // So it won't be rotated
         Color color;                                    // Color of tetrominos
         Label[] tetromino1 = new Label[4];  // S
         Label[] tetromino2 = new Label[4];  // Z
@@ -98,7 +98,6 @@ namespace Tetris666
                     tetromino1[2] = AddLabelParticle(tetromino1[1].Location.X + labelSize, tetromino1[1].Location.Y, color);
                     tetromino1[3] = AddLabelParticle(tetromino1[2].Location.X, tetromino1[1].Location.Y + labelSize, color);
                     currentTetromino = tetromino1;
-
                     break;
                 case 2:  // Draw Z
                     tetromino2[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
@@ -106,46 +105,36 @@ namespace Tetris666
                     tetromino2[2] = AddLabelParticle(tetromino2[1].Location.X - labelSize, tetromino2[1].Location.Y, color);
                     tetromino2[3] = AddLabelParticle(tetromino2[2].Location.X, tetromino2[2].Location.Y + labelSize, color);
                     currentTetromino = tetromino2;
-
                     break;
                 case 3:  // Draw O  
-
                     tetromino3[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
                     tetromino3[1] = AddLabelParticle(tetromino3[0].Location.X, tetromino3[0].Location.Y + labelSize, color);
                     tetromino3[2] = AddLabelParticle(tetromino3[1].Location.X - labelSize, tetromino3[1].Location.Y, color);
                     tetromino3[3] = AddLabelParticle(tetromino3[2].Location.X, tetromino3[2].Location.Y - labelSize, color);
                     currentTetromino = tetromino3;
-
                     break;
                 case 4:  // Draw T
-
                     tetromino4[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
                     tetromino4[1] = AddLabelParticle(tetromino4[0].Location.X + labelSize, tetromino4[0].Location.Y, color);
                     tetromino4[2] = AddLabelParticle(tetromino4[1].Location.X + labelSize, tetromino4[1].Location.Y, color);
                     tetromino4[3] = AddLabelParticle(tetromino4[2].Location.X - labelSize, tetromino4[2].Location.Y + labelSize, color);
                     currentTetromino = tetromino4;
-
                     break;
                 case 5:  // Draw L
-
                     tetromino5[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
                     tetromino5[1] = AddLabelParticle(tetromino5[0].Location.X, tetromino5[0].Location.Y + labelSize, color);
                     tetromino5[2] = AddLabelParticle(tetromino5[1].Location.X, tetromino5[1].Location.Y + labelSize, color);
                     tetromino5[3] = AddLabelParticle(tetromino5[2].Location.X + labelSize, tetromino5[2].Location.Y, color);
                     currentTetromino = tetromino5;
-
                     break;
                 case 6:  // Draw J
-
                     tetromino6[0] = AddLabelParticle(x * labelSize, y * labelSize, color);
                     tetromino6[1] = AddLabelParticle(tetromino6[0].Location.X, tetromino6[0].Location.Y + labelSize, color);
                     tetromino6[2] = AddLabelParticle(tetromino6[1].Location.X, tetromino6[1].Location.Y + labelSize, color);
                     tetromino6[3] = AddLabelParticle(tetromino6[2].Location.X - labelSize, tetromino6[2].Location.Y, color);
                     currentTetromino = tetromino6;
-
                     break;
                 case 7:  // Draw I
-
                     for (int i = 0; i < 4; i++)
                     {
                         tetromino7[i] = AddLabelParticle(x * labelSize, y + (i * labelSize), color);
@@ -175,7 +164,6 @@ namespace Tetris666
             {
                 panel1.Controls.Remove(currentTetromino[i]);
             }
-
         }
 
 
@@ -223,8 +211,8 @@ namespace Tetris666
                             }
 
                             for (int i = 0; i < currentNumberOfLabels; i++)  // Then actually move labels 
-                                                                                // to where they are supposed to be
-                                                                                // after line destruction
+                                                                             // to where they are supposed to be
+                                                                             // after line destruction
                             {
                                 int x1 = placedTetrominos[i].Location.X;
                                 int y1 = placedTetrominos[i].Location.Y;
@@ -240,7 +228,7 @@ namespace Tetris666
                             x = 320;  // We reset the inner and outer loop
                             y = 460;     // to detect full lines until there is none
                         }
-                        
+
                     }
 
                 }
@@ -261,7 +249,7 @@ namespace Tetris666
             return color;
         }
 
-        private bool IsLeftMovable()  
+        private bool IsLeftMovable()
         {
             for (int i = 0; i < 4; i++)
             {
@@ -505,18 +493,21 @@ namespace Tetris666
                     case Keys.Left: MoveLeft(); break;
                     case Keys.Right: MoveRight(); break;
                     case Keys.Down: MoveDown(); break;
-                    case Keys.Up: Rotate(); break;    
+                    case Keys.Up: Rotate(); break;
                 }
             }
         }
 
         private void button2_PreviewKeyDown(object sender, PreviewKeyDownEventArgs e)  // Make arrow keys only work for game
-                                                                                        // rather than transition between buttons
+                                                                                       // rather than transition between buttons
         {
             switch (e.KeyCode)
             {
-                case Keys.Down: case Keys.Left: case Keys.Right: case Keys.Up:
-                    e.IsInputKey = true; 
+                case Keys.Down:
+                case Keys.Left:
+                case Keys.Right:
+                case Keys.Up:
+                    e.IsInputKey = true;
                     break;
             }
         }
